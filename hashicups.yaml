@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  description: Example Hashicups through Speakeasy
+  title: Hashicups
+  version: 0.0.1
+servers:
+  - url: https://example.com
+security:
+  - APIKey: [ ]
+externalDocs:
+  url: https://docs.speakeasyapi.dev
+  description: The Speakeasy Platform Documentation
+tags:
+  - name: Order
+
+paths:
+  /v1/order:
+    put:
+      summary: Create an order
+      x-speakeasy-entity-operation: Order#create,update
+      operationId: upsertOrder
+      requestBody:
+        description: A JSON representation of the Api to upsert
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+          description: OK
+      tags:
+        - Order
+  /v1/order/{orderID}:
+    get:
+      summary: Get an order
+      x-speakeasy-entity-operation: Order#get
+      operationId: getOrder
+      parameters:
+        - description: The ID of the order get.
+          in: path
+          name: orderID
+          x-speakeasy-match: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+          description: OK
+      tags:
+        - Order
+    delete:
+      summary: Delete an order
+      x-speakeasy-entity-operation: Order#delete
+      operationId: deleteOrder
+      parameters:
+        - description: The ID of the order to delete.
+          in: path
+          name: orderID
+          x-speakeasy-match: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+      tags:
+        - Order
+components:
+  schemas:
+    Order:
+      description: An order helps you make coffee
+      x-speakeasy-entity: Order
+      properties:
+        id:
+          type: integer
+          description: Numeric identifier of the order.
+        name:
+          type: string
+          description: Product name of the coffee.
+        teaser:
+          type: string
+          description: Fun tagline for the coffee.
+        description:
+          type: string
+          description: Product description of the coffee.
+        price:
+          type: number
+          description: Suggested cost of the coffee.
+        image:
+          type: string
+          description: URI for an image of the coffee.
+      required:
+        - name
+        - teaser
+        - description
+        - price
+        - image
+      type: object
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
