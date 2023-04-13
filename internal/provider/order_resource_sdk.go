@@ -9,39 +9,214 @@ import (
 )
 
 func (r *OrderResourceModel) ToSDKType() *shared.Order {
-	description := r.Description.ValueString()
 	id := new(int64)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueInt64()
 	} else {
 		id = nil
 	}
-	image := r.Image.ValueString()
-	name := r.Name.ValueString()
-	price, _ := r.Price.ValueBigFloat().Float64()
-	teaser := r.Teaser.ValueString()
+	items := make([]shared.OrderItem, 0)
+	for _, itemsItem := range r.Items {
+		var coffee *shared.Coffee
+		if itemsItem.Coffee != nil {
+			collection := new(string)
+			if !itemsItem.Coffee.Collection.IsUnknown() && !itemsItem.Coffee.Collection.IsNull() {
+				*collection = itemsItem.Coffee.Collection.ValueString()
+			} else {
+				collection = nil
+			}
+			color := new(string)
+			if !itemsItem.Coffee.Color.IsUnknown() && !itemsItem.Coffee.Color.IsNull() {
+				*color = itemsItem.Coffee.Color.ValueString()
+			} else {
+				color = nil
+			}
+			description := new(string)
+			if !itemsItem.Coffee.Description.IsUnknown() && !itemsItem.Coffee.Description.IsNull() {
+				*description = itemsItem.Coffee.Description.ValueString()
+			} else {
+				description = nil
+			}
+			id1 := new(int64)
+			if !itemsItem.Coffee.ID.IsUnknown() && !itemsItem.Coffee.ID.IsNull() {
+				*id1 = itemsItem.Coffee.ID.ValueInt64()
+			} else {
+				id1 = nil
+			}
+			image := new(string)
+			if !itemsItem.Coffee.Image.IsUnknown() && !itemsItem.Coffee.Image.IsNull() {
+				*image = itemsItem.Coffee.Image.ValueString()
+			} else {
+				image = nil
+			}
+			ingredients := new(string)
+			if !itemsItem.Coffee.Ingredients.IsUnknown() && !itemsItem.Coffee.Ingredients.IsNull() {
+				*ingredients = itemsItem.Coffee.Ingredients.ValueString()
+			} else {
+				ingredients = nil
+			}
+			name := new(string)
+			if !itemsItem.Coffee.Name.IsUnknown() && !itemsItem.Coffee.Name.IsNull() {
+				*name = itemsItem.Coffee.Name.ValueString()
+			} else {
+				name = nil
+			}
+			origin := new(string)
+			if !itemsItem.Coffee.Origin.IsUnknown() && !itemsItem.Coffee.Origin.IsNull() {
+				*origin = itemsItem.Coffee.Origin.ValueString()
+			} else {
+				origin = nil
+			}
+			price := new(float64)
+			if !itemsItem.Coffee.Price.IsUnknown() && !itemsItem.Coffee.Price.IsNull() {
+				*price, _ = itemsItem.Coffee.Price.ValueBigFloat().Float64()
+			} else {
+				price = nil
+			}
+			teaser := new(string)
+			if !itemsItem.Coffee.Teaser.IsUnknown() && !itemsItem.Coffee.Teaser.IsNull() {
+				*teaser = itemsItem.Coffee.Teaser.ValueString()
+			} else {
+				teaser = nil
+			}
+			coffee = &shared.Coffee{
+				Collection:  collection,
+				Color:       color,
+				Description: description,
+				ID:          id1,
+				Image:       image,
+				Ingredients: ingredients,
+				Name:        name,
+				Origin:      origin,
+				Price:       price,
+				Teaser:      teaser,
+			}
+		}
+		coffeeID := new(int64)
+		if !itemsItem.CoffeeID.IsUnknown() && !itemsItem.CoffeeID.IsNull() {
+			*coffeeID = itemsItem.CoffeeID.ValueInt64()
+		} else {
+			coffeeID = nil
+		}
+		id2 := new(int64)
+		if !itemsItem.ID.IsUnknown() && !itemsItem.ID.IsNull() {
+			*id2 = itemsItem.ID.ValueInt64()
+		} else {
+			id2 = nil
+		}
+		orderID := new(int64)
+		if !itemsItem.OrderID.IsUnknown() && !itemsItem.OrderID.IsNull() {
+			*orderID = itemsItem.OrderID.ValueInt64()
+		} else {
+			orderID = nil
+		}
+		quantity := new(int64)
+		if !itemsItem.Quantity.IsUnknown() && !itemsItem.Quantity.IsNull() {
+			*quantity = itemsItem.Quantity.ValueInt64()
+		} else {
+			quantity = nil
+		}
+		items = append(items, shared.OrderItem{
+			Coffee:   coffee,
+			CoffeeID: coffeeID,
+			ID:       id2,
+			OrderID:  orderID,
+			Quantity: quantity,
+		})
+	}
 	out := shared.Order{
-		Description: description,
-		ID:          id,
-		Image:       image,
-		Name:        name,
-		Price:       price,
-		Teaser:      teaser,
+		ID:    id,
+		Items: items,
 	}
 	return &out
 
 }
 
 func (r *OrderResourceModel) RefreshFromSDKType(resp *shared.Order) {
-	r.Description = types.StringValue(resp.Description)
 	if resp.ID != nil {
 		r.ID = types.Int64Value(*resp.ID)
 	} else {
 		r.ID = types.Int64Null()
 	}
-	r.Image = types.StringValue(resp.Image)
-	r.Name = types.StringValue(resp.Name)
-	r.Price = types.NumberValue(big.NewFloat(resp.Price))
-	r.Teaser = types.StringValue(resp.Teaser)
+	r.Items = nil
+	for _, itemsItem := range resp.Items {
+		var items1 OrderItem
+		if itemsItem.Coffee == nil {
+			items1.Coffee = nil
+		} else {
+			items1.Coffee = &Coffee{}
+			if itemsItem.Coffee.Collection != nil {
+				items1.Coffee.Collection = types.StringValue(*itemsItem.Coffee.Collection)
+			} else {
+				items1.Coffee.Collection = types.StringNull()
+			}
+			if itemsItem.Coffee.Color != nil {
+				items1.Coffee.Color = types.StringValue(*itemsItem.Coffee.Color)
+			} else {
+				items1.Coffee.Color = types.StringNull()
+			}
+			if itemsItem.Coffee.Description != nil {
+				items1.Coffee.Description = types.StringValue(*itemsItem.Coffee.Description)
+			} else {
+				items1.Coffee.Description = types.StringNull()
+			}
+			if itemsItem.Coffee.ID != nil {
+				items1.Coffee.ID = types.Int64Value(*itemsItem.Coffee.ID)
+			} else {
+				items1.Coffee.ID = types.Int64Null()
+			}
+			if itemsItem.Coffee.Image != nil {
+				items1.Coffee.Image = types.StringValue(*itemsItem.Coffee.Image)
+			} else {
+				items1.Coffee.Image = types.StringNull()
+			}
+			if itemsItem.Coffee.Ingredients != nil {
+				items1.Coffee.Ingredients = types.StringValue(*itemsItem.Coffee.Ingredients)
+			} else {
+				items1.Coffee.Ingredients = types.StringNull()
+			}
+			if itemsItem.Coffee.Name != nil {
+				items1.Coffee.Name = types.StringValue(*itemsItem.Coffee.Name)
+			} else {
+				items1.Coffee.Name = types.StringNull()
+			}
+			if itemsItem.Coffee.Origin != nil {
+				items1.Coffee.Origin = types.StringValue(*itemsItem.Coffee.Origin)
+			} else {
+				items1.Coffee.Origin = types.StringNull()
+			}
+			if itemsItem.Coffee.Price != nil {
+				items1.Coffee.Price = types.NumberValue(big.NewFloat(*itemsItem.Coffee.Price))
+			} else {
+				items1.Coffee.Price = types.NumberNull()
+			}
+			if itemsItem.Coffee.Teaser != nil {
+				items1.Coffee.Teaser = types.StringValue(*itemsItem.Coffee.Teaser)
+			} else {
+				items1.Coffee.Teaser = types.StringNull()
+			}
+		}
+		if itemsItem.CoffeeID != nil {
+			items1.CoffeeID = types.Int64Value(*itemsItem.CoffeeID)
+		} else {
+			items1.CoffeeID = types.Int64Null()
+		}
+		if itemsItem.ID != nil {
+			items1.ID = types.Int64Value(*itemsItem.ID)
+		} else {
+			items1.ID = types.Int64Null()
+		}
+		if itemsItem.OrderID != nil {
+			items1.OrderID = types.Int64Value(*itemsItem.OrderID)
+		} else {
+			items1.OrderID = types.Int64Null()
+		}
+		if itemsItem.Quantity != nil {
+			items1.Quantity = types.Int64Value(*itemsItem.Quantity)
+		} else {
+			items1.Quantity = types.Int64Null()
+		}
+		r.Items = append(r.Items, items1)
+	}
 
 }

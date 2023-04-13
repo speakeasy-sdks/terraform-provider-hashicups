@@ -1,10 +1,10 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  description: Example Hashicups through Speakeasy
-  title: Hashicups
-  version: 0.0.1
+  title: Products API
+  description: Products API allows access to HashiCoffee Coffees and Ingredients
+  version: 0.1.9
 servers:
-  - url: https://example.com
+  - url: http://localhost:9090
 security:
   - APIKey: [ ]
 externalDocs:
@@ -12,15 +12,21 @@ externalDocs:
   description: The Speakeasy Platform Documentation
 tags:
   - name: Order
-
 paths:
   /v1/order:
-    put:
+    post:
       summary: Create an order
-      x-speakeasy-entity-operation: Order#create,update
-      operationId: upsertOrder
+      x-speakeasy-entity-operation: Order#create
+      operationId: createOrder
+      # parameters:
+      #   - description: If this order is a draft (dry-run) order
+      #     in: query
+      #     name: draft
+      #     required: true
+      #     schema:
+      #       type: boolean
       requestBody:
-        description: A JSON representation of the Api to upsert
+        description: A JSON representation of the order to upsert
         content:
           application/json:
             schema:
@@ -41,7 +47,7 @@ paths:
       x-speakeasy-entity-operation: Order#get
       operationId: getOrder
       parameters:
-        - description: The ID of the order get.
+        - description: The ID of the order
           in: path
           name: orderID
           x-speakeasy-match: id
@@ -57,12 +63,41 @@ paths:
           description: OK
       tags:
         - Order
+    put:
+      summary: Update an order
+      x-speakeasy-entity-operation: Order#update
+      operationId: updateOrder
+      parameters:
+        - description: The ID of the order
+          in: path
+          name: orderID
+          x-speakeasy-match: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: A JSON representation of the order to upsert
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+          description: OK
+      tags:
+        - Order
+
     delete:
       summary: Delete an order
       x-speakeasy-entity-operation: Order#delete
       operationId: deleteOrder
       parameters:
-        - description: The ID of the order to delete.
+        - description: The ID of the order
           in: path
           name: orderID
           x-speakeasy-match: id
@@ -76,35 +111,62 @@ paths:
         - Order
 components:
   schemas:
+    Coffee:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        teaser:
+          type: string
+        collection:
+          type: string
+        origin:
+          type: string
+        color:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        image:
+          type: string
+        ingredients:
+          type: string
     Order:
-      description: An order helps you make coffee
+      type: object
+      description: "Order defines an order in the database"
       x-speakeasy-entity: Order
       properties:
         id:
           type: integer
-          description: Numeric identifier of the order.
-        name:
-          type: string
-          description: Product name of the coffee.
-        teaser:
-          type: string
-          description: Fun tagline for the coffee.
-        description:
-          type: string
-          description: Product description of the coffee.
-        price:
-          type: number
-          description: Suggested cost of the coffee.
-        image:
-          type: string
-          description: URI for an image of the coffee.
+        items:
+          $ref: "#/components/schemas/OrderItems"
+    OrderItems:
+      type: array
+      items:
+        $ref: "#/components/schemas/OrderItem"
+    OrderItem:
+      type: object
+      description: An OrderItem is an item/quantity in an order
+      properties:
+        id:
+          type: integer
+        order_id:
+          type: integer
+        coffee_id:
+          type: integer
+        coffee:
+          $ref: "#/components/schemas/Coffee"
+        quantity:
+          type: integer
       required:
         - name
         - teaser
         - description
         - price
         - image
-      type: object
   securitySchemes:
     APIKey:
       description: The API Key for the workspace

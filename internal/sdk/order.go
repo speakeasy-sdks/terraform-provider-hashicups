@@ -32,6 +32,60 @@ func newOrder(defaultClient, securityClient HTTPClient, serverURL, language, sdk
 	}
 }
 
+// CreateOrder - Create an order
+func (s *order) CreateOrder(ctx context.Context, request shared.Order) (*operations.CreateOrderResponse, error) {
+	baseURL := s.serverURL
+	url := strings.TrimSuffix(baseURL, "/") + "/v1/order"
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	if err != nil {
+		return nil, fmt.Errorf("error serializing request body: %w", err)
+	}
+	if bodyReader == nil {
+		return nil, fmt.Errorf("request body is required")
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", reqContentType)
+
+	client := s.securityClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+	defer httpRes.Body.Close()
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.CreateOrderResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.Order
+			if err := utils.UnmarshalJsonFromResponseBody(httpRes.Body, &out); err != nil {
+				return nil, err
+			}
+
+			res.Order = out
+		}
+	}
+
+	return res, nil
+}
+
 // DeleteOrder - Delete an order
 func (s *order) DeleteOrder(ctx context.Context, request operations.DeleteOrderRequest) (*operations.DeleteOrderResponse, error) {
 	baseURL := s.serverURL
@@ -111,12 +165,12 @@ func (s *order) GetOrder(ctx context.Context, request operations.GetOrderRequest
 	return res, nil
 }
 
-// UpsertOrder - Create an order
-func (s *order) UpsertOrder(ctx context.Context, request shared.Order) (*operations.UpsertOrderResponse, error) {
+// UpdateOrder - Update an order
+func (s *order) UpdateOrder(ctx context.Context, request operations.UpdateOrderRequest) (*operations.UpdateOrderResponse, error) {
 	baseURL := s.serverURL
-	url := strings.TrimSuffix(baseURL, "/") + "/v1/order"
+	url := utils.GenerateURL(ctx, baseURL, "/v1/order/{orderID}", request, nil)
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Order", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -144,7 +198,7 @@ func (s *order) UpsertOrder(ctx context.Context, request shared.Order) (*operati
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.UpsertOrderResponse{
+	res := &operations.UpdateOrderResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,

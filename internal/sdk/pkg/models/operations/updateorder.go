@@ -7,12 +7,14 @@ import (
 	"net/http"
 )
 
-type GetOrderRequest struct {
+type UpdateOrderRequest struct {
+	// A JSON representation of the order to upsert
+	Order shared.Order `request:"mediaType=application/json"`
 	// The ID of the order
 	OrderID int64 `pathParam:"style=simple,explode=false,name=orderID"`
 }
 
-type GetOrderResponse struct {
+type UpdateOrderResponse struct {
 	ContentType string
 	// OK
 	Order       *shared.Order

@@ -2,18 +2,8 @@
 
 package shared
 
-// Order - An order helps you make coffee
+// Order - Order defines an order in the database
 type Order struct {
-	// Product description of the coffee.
-	Description string `json:"description"`
-	// Numeric identifier of the order.
-	ID *int64 `json:"id,omitempty"`
-	// URI for an image of the coffee.
-	Image string `json:"image"`
-	// Product name of the coffee.
-	Name string `json:"name"`
-	// Suggested cost of the coffee.
-	Price float64 `json:"price"`
-	// Fun tagline for the coffee.
-	Teaser string `json:"teaser"`
+	ID    *int64      `json:"id,omitempty"`
+	Items []OrderItem `json:"items,omitempty"`
 }

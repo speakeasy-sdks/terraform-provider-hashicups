@@ -7,7 +7,7 @@ import (
 )
 
 type DeleteOrderRequest struct {
-	// The ID of the order to delete.
+	// The ID of the order
 	OrderID int64 `pathParam:"style=simple,explode=false,name=orderID"`
 }
 

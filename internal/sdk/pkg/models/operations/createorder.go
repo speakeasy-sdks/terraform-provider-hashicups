@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type UpsertOrderResponse struct {
+type CreateOrderResponse struct {
 	ContentType string
 	// OK
 	Order       *shared.Order

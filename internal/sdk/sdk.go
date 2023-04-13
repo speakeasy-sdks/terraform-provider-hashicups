@@ -11,7 +11,7 @@ import (
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
-	"https://example.com",
+	"http://localhost:9090",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -22,7 +22,7 @@ type HTTPClient interface {
 // String provides a helper function to return a pointer to a string
 func String(s string) *string { return &s }
 
-// SDK - Example Hashicups through Speakeasy
+// SDK - Products API allows access to HashiCoffee Coffees and Ingredients
 // https://docs.speakeasyapi.dev - The Speakeasy Platform Documentation
 type SDK struct {
 	Order *order
@@ -76,7 +76,7 @@ func New(opts ...SDKOption) *SDK {
 	sdk := &SDK{
 		_language:   "go",
 		_sdkVersion: "0.0.1",
-		_genVersion: "internal",
+		_genVersion: "2.17.8",
 	}
 	for _, opt := range opts {
 		opt(sdk)

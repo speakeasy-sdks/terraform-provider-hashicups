@@ -38,7 +38,7 @@ func (p *HashicupsProvider) Schema(ctx context.Context, req provider.SchemaReque
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://example.com)",
+				MarkdownDescription: "Server URL (defaults to http://localhost:9090)",
 				Optional:            true,
 			},
 			"api_key": schema.StringAttribute{
@@ -61,7 +61,7 @@ func (p *HashicupsProvider) Configure(ctx context.Context, req provider.Configur
 	ServerURL := data.ServerURL.ValueString()
 
 	if ServerURL == "" {
-		ServerURL = "https://example.com"
+		ServerURL = "http://localhost:9090"
 	}
 
 	apiKey := data.APIKey.ValueString()

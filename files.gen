@@ -1,5 +1,7 @@
 internal/sdk/order.go
 internal/sdk/sdk.go
+internal/provider/type_coffee.go
+internal/provider/type_order_item.go
 examples/README.md
 go.mod
 go.sum
@@ -20,10 +22,13 @@ internal/validators/RFC3339Validator.go
 main.go
 terraform-registry-manifest.json
 tools/tools.go
+internal/sdk/pkg/models/operations/createorder.go
 internal/sdk/pkg/models/operations/deleteorder.go
 internal/sdk/pkg/models/operations/getorder.go
-internal/sdk/pkg/models/operations/upsertorder.go
+internal/sdk/pkg/models/operations/updateorder.go
 internal/sdk/pkg/models/shared/order.go
+internal/sdk/pkg/models/shared/orderitem.go
+internal/sdk/pkg/models/shared/coffee.go
 internal/sdk/pkg/models/shared/security.go
 USAGE.md
 internal/provider/provider.go

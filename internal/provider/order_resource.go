@@ -31,12 +31,8 @@ type OrderResource struct {
 
 // OrderResourceModel describes the resource data model.
 type OrderResourceModel struct {
-	Description types.String `tfsdk:"description"`
-	ID          types.Int64  `tfsdk:"id"`
-	Image       types.String `tfsdk:"image"`
-	Name        types.String `tfsdk:"name"`
-	Price       types.Number `tfsdk:"price"`
-	Teaser      types.String `tfsdk:"teaser"`
+	ID    types.Int64 `tfsdk:"id"`
+	Items []OrderItem `tfsdk:"items"`
 }
 
 func (r *OrderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -48,24 +44,79 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 		MarkdownDescription: "Order Resource",
 
 		Attributes: map[string]schema.Attribute{
-			"description": schema.StringAttribute{
-				Required: true,
-			},
 			"id": schema.Int64Attribute{
 				Computed: true,
 				Optional: true,
 			},
-			"image": schema.StringAttribute{
-				Required: true,
-			},
-			"name": schema.StringAttribute{
-				Required: true,
-			},
-			"price": schema.NumberAttribute{
-				Required: true,
-			},
-			"teaser": schema.StringAttribute{
-				Required: true,
+			"items": schema.ListNestedAttribute{
+				Computed: true,
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"coffee": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"collection": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"color": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"description": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"id": schema.Int64Attribute{
+									Computed: true,
+									Optional: true,
+								},
+								"image": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"ingredients": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"name": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"origin": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"price": schema.NumberAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"teaser": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+							},
+						},
+						"coffee_id": schema.Int64Attribute{
+							Computed: true,
+							Optional: true,
+						},
+						"id": schema.Int64Attribute{
+							Computed: true,
+							Optional: true,
+						},
+						"order_id": schema.Int64Attribute{
+							Computed: true,
+							Optional: true,
+						},
+						"quantity": schema.Int64Attribute{
+							Computed: true,
+							Optional: true,
+						},
+					},
+				},
 			},
 		},
 	}
@@ -110,7 +161,7 @@ func (r *OrderResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	request := *data.ToSDKType()
-	res, err := r.client.Order.UpsertOrder(ctx, request)
+	res, err := r.client.Order.CreateOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
@@ -196,8 +247,13 @@ func (r *OrderResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	request := *data.ToSDKType()
-	res, err := r.client.Order.UpsertOrder(ctx, request)
+	order := *data.ToSDKType()
+	orderID := data.ID.ValueInt64()
+	request := operations.UpdateOrderRequest{
+		Order:   order,
+		OrderID: orderID,
+	}
+	res, err := r.client.Order.UpdateOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
