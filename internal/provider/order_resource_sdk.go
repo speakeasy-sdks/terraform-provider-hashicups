@@ -8,7 +8,7 @@ import (
 	"math/big"
 )
 
-func (r *OrderResourceModel) ToSDKType() *shared.Order {
+func (r *OrderResourceModel) ToCreateSDKType() *shared.Order {
 	description := r.Description.ValueString()
 	id := new(int64)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
@@ -29,10 +29,24 @@ func (r *OrderResourceModel) ToSDKType() *shared.Order {
 		Teaser:      teaser,
 	}
 	return &out
-
 }
 
-func (r *OrderResourceModel) RefreshFromSDKType(resp *shared.Order) {
+func (r *OrderResourceModel) ToGetSDKType() *shared.Order {
+	out := r.ToCreateSDKType()
+	return out
+}
+
+func (r *OrderResourceModel) ToUpdateSDKType() *shared.Order {
+	out := r.ToCreateSDKType()
+	return out
+}
+
+func (r *OrderResourceModel) ToDeleteSDKType() *shared.Order {
+	out := r.ToCreateSDKType()
+	return out
+}
+
+func (r *OrderResourceModel) RefreshFromGetResponse(resp *shared.Order) {
 	r.Description = types.StringValue(resp.Description)
 	if resp.ID != nil {
 		r.ID = types.Int64Value(*resp.ID)
@@ -43,5 +57,12 @@ func (r *OrderResourceModel) RefreshFromSDKType(resp *shared.Order) {
 	r.Name = types.StringValue(resp.Name)
 	r.Price = types.NumberValue(big.NewFloat(resp.Price))
 	r.Teaser = types.StringValue(resp.Teaser)
+}
 
+func (r *OrderResourceModel) RefreshFromCreateResponse(resp *shared.Order) {
+	r.RefreshFromGetResponse(resp)
+}
+
+func (r *OrderResourceModel) RefreshFromUpdateResponse(resp *shared.Order) {
+	r.RefreshFromGetResponse(resp)
 }

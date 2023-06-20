@@ -40,6 +40,7 @@ func (p *HashicupsProvider) Schema(ctx context.Context, req provider.SchemaReque
 			"server_url": schema.StringAttribute{
 				MarkdownDescription: "Server URL (defaults to https://example.com)",
 				Optional:            true,
+				Required:            false,
 			},
 			"api_key": schema.StringAttribute{
 				Optional:  true,

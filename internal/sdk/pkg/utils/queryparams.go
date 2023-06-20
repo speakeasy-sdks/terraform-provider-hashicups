@@ -34,14 +34,12 @@ func PopulateQueryParams(ctx context.Context, req *http.Request, queryParams int
 		valType = populateFromGlobals(fieldType, valType, "queryParam", globals)
 
 		if qpTag.Serialization != "" {
-			vals, err := populateSerializedParams(req, qpTag, fieldType.Type, valType)
+			vals, err := populateSerializedParams(qpTag, fieldType.Type, valType)
 			if err != nil {
 				return err
 			}
 			for k, v := range vals {
-				for _, vv := range v {
-					values.Add(k, vv)
-				}
+				values.Add(k, v)
 			}
 		} else {
 			switch qpTag.Style {
@@ -53,7 +51,14 @@ func PopulateQueryParams(ctx context.Context, req *http.Request, queryParams int
 					}
 				}
 			case "form":
-				vals := populateFormParams(req, qpTag, fieldType.Type, valType)
+				vals := populateFormParams(req, qpTag, fieldType.Type, valType, ",")
+				for k, v := range vals {
+					for _, vv := range v {
+						values.Add(k, vv)
+					}
+				}
+			case "pipeDelimited":
+				vals := populateFormParams(req, qpTag, fieldType.Type, valType, "|")
 				for k, v := range vals {
 					for _, vv := range v {
 						values.Add(k, vv)
@@ -70,18 +75,18 @@ func PopulateQueryParams(ctx context.Context, req *http.Request, queryParams int
 	return nil
 }
 
-func populateSerializedParams(req *http.Request, tag *paramTag, objType reflect.Type, objValue reflect.Value) (url.Values, error) {
-	values := url.Values{}
-
+func populateSerializedParams(tag *paramTag, objType reflect.Type, objValue reflect.Value) (map[string]string, error) {
 	if objType.Kind() == reflect.Pointer {
 		if objValue.IsNil() {
-			return values, nil
+			return nil, nil
 		}
 		objValue = objValue.Elem()
 	}
 	if objValue.Interface() == nil {
-		return values, nil
+		return nil, nil
 	}
+
+	values := map[string]string{}
 
 	switch tag.Serialization {
 	case "json":
@@ -89,7 +94,7 @@ func populateSerializedParams(req *http.Request, tag *paramTag, objType reflect.
 		if err != nil {
 			return nil, fmt.Errorf("error marshaling json: %v", err)
 		}
-		values.Add(tag.ParamName, string(data))
+		values[tag.ParamName] = string(data)
 	}
 
 	return values, nil
@@ -150,8 +155,8 @@ func populateDeepObjectParams(req *http.Request, tag *paramTag, objType reflect.
 	return values
 }
 
-func populateFormParams(req *http.Request, tag *paramTag, objType reflect.Type, objValue reflect.Value) url.Values {
-	return populateForm(tag.ParamName, tag.Explode, objType, objValue, func(fieldType reflect.StructField) string {
+func populateFormParams(req *http.Request, tag *paramTag, objType reflect.Type, objValue reflect.Value, delimiter string) url.Values {
+	return populateForm(tag.ParamName, tag.Explode, objType, objValue, delimiter, func(fieldType reflect.StructField) string {
 		qpTag := parseQueryParamTag(fieldType)
 		if qpTag == nil {
 			return ""

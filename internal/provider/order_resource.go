@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"hashicups/internal/sdk"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"hashicups/internal/sdk/pkg/models/operations"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -109,7 +109,7 @@ func (r *OrderResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	request := *data.ToSDKType()
+	request := *data.ToCreateSDKType()
 	res, err := r.client.Order.UpsertOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -127,7 +127,7 @@ func (r *OrderResource) Create(ctx context.Context, req resource.CreateRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSDKType(res.Order)
+	data.RefreshFromCreateResponse(res.Order)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -172,7 +172,7 @@ func (r *OrderResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSDKType(res.Order)
+	data.RefreshFromGetResponse(res.Order)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -180,23 +180,12 @@ func (r *OrderResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 func (r *OrderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *OrderResourceModel
-	var item types.Object
-
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
-		UnhandledNullAsEmpty:    true,
-		UnhandledUnknownAsEmpty: true,
-	})...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	request := *data.ToSDKType()
+	request := *data.ToUpdateSDKType()
 	res, err := r.client.Order.UpsertOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -214,7 +203,7 @@ func (r *OrderResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSDKType(res.Order)
+	data.RefreshFromUpdateResponse(res.Order)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
