@@ -2,7 +2,7 @@
 
 This repository is an example of generating an example provider called [hashicups](https://github.com/hashicorp/terraform-provider-hashicups-pf) from the OpenAPI specification in `hashicups.yaml`, with configuration in `gen.yaml`. No other inputs are required.
 
-It works by using the [Speakeasy](https://speakeasyapi.dev) platform and associated CLI Tooling to generate code. This tooling parses an OpenAPI specification annotated with extensions that help inform it about terraform resources, and how to invoke API operations to create, update, read and destroy those resources.
+It works by using the [Speakeasy](https://speakeasyapi.dev) platform and associated CLI Tooling to generate code. This tooling parses an OpenAPI specification annotated with extensions that help inform it about terraform resources, and how to invoke API operations to create, update, read and destroy those resources. For information on terraform annotations that you can add to your OpenAPI spec please see [here](https://speakeasyapi.dev/docs/using-speakeasy/create-terraform/intro/). 
 
 This provider is for demonstration purposes only. Do not publish this to the terraform registry.
 
