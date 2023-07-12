@@ -34,7 +34,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/hashicorp/hashicups",
+		Address: "registry.terraform.io/speakeasy/hashicups",
 		Debug:   debug,
 	}
 

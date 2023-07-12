@@ -2,12 +2,10 @@
 
 package shared
 
-// Order - An order helps you make coffee
-type Order struct {
+// CreateOrderInput - An input object to creating an order
+type CreateOrderInput struct {
 	// Product description of the coffee.
 	Description string `json:"description"`
-	// Order ID
-	ID int64 `json:"id"`
 	// URI for an image of the coffee.
 	Image string `json:"image"`
 	// Product name of the coffee.

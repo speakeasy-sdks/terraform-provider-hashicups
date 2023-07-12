@@ -24,7 +24,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Order"
+              $ref: "#/components/schemas/CreateOrderInput"
         required: true
       responses:
         "200":
@@ -76,13 +76,10 @@ paths:
         - Order
 components:
   schemas:
-    Order:
-      description: An order helps you make coffee
+    CreateOrderInput:
+      description: An input object to creating an order
       x-speakeasy-entity: Order
       properties:
-        id:
-          type: integer
-          description: Numeric identifier of the order.
         name:
           type: string
           description: Product name of the coffee.
@@ -99,6 +96,36 @@ components:
           type: string
           description: URI for an image of the coffee.
       required:
+        - name
+        - teaser
+        - description
+        - price
+        - image
+      type: object
+    Order:
+      description: An order helps you make coffee
+      x-speakeasy-entity: Order
+      properties:
+        name:
+          type: string
+          description: Product name of the coffee.
+        id:
+          type: integer
+          description: Order ID
+        teaser:
+          type: string
+          description: Fun tagline for the coffee.
+        description:
+          type: string
+          description: Product description of the coffee.
+        price:
+          type: number
+          description: Suggested cost of the coffee.
+        image:
+          type: string
+          description: URI for an image of the coffee.
+      required:
+        - id
         - name
         - teaser
         - description

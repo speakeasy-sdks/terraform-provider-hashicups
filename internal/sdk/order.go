@@ -126,7 +126,7 @@ func (s *order) GetOrder(ctx context.Context, request operations.GetOrderRequest
 }
 
 // UpsertOrder - Create an order
-func (s *order) UpsertOrder(ctx context.Context, request shared.Order) (*operations.UpsertOrderResponse, error) {
+func (s *order) UpsertOrder(ctx context.Context, request shared.CreateOrderInput) (*operations.UpsertOrderResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/v1/order"
 

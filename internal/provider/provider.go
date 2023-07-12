@@ -36,6 +36,7 @@ func (p *HashicupsProvider) Metadata(ctx context.Context, req provider.MetadataR
 
 func (p *HashicupsProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: `Hashicups: Example Hashicups through Speakeasy`,
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
 				MarkdownDescription: "Server URL (defaults to https://example.com)",

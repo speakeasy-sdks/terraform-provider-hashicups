@@ -8,12 +8,11 @@ import (
 	"hashicups/internal/sdk"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
-	"hashicups/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"hashicups/internal/sdk/pkg/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -49,23 +48,28 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `Product description of the coffee.`,
 			},
 			"id": schema.Int64Attribute{
-				Computed: true,
-				Optional: true,
+				Computed:    true,
+				Description: `Order ID`,
 			},
 			"image": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `URI for an image of the coffee.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `Product name of the coffee.`,
 			},
 			"price": schema.NumberAttribute{
-				Required: true,
+				Required:    true,
+				Description: `Suggested cost of the coffee.`,
 			},
 			"teaser": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `Fun tagline for the coffee.`,
 			},
 		},
 	}

@@ -51,8 +51,11 @@ internal/sdk/pkg/models/operations/deleteorder.go
 internal/sdk/pkg/models/operations/getorder.go
 internal/sdk/pkg/models/operations/upsertorder.go
 internal/sdk/pkg/models/shared/order.go
+internal/sdk/pkg/models/shared/createorderinput.go
 internal/sdk/pkg/models/shared/security.go
 USAGE.md
 internal/provider/provider.go
+examples/provider/provider.tf
 internal/provider/order_resource.go
 internal/provider/order_resource_sdk.go
+examples/resources/hashicups_order/resource.tf
