@@ -5,7 +5,7 @@ package shared
 // Order - An order helps you make coffee
 type Order struct {
 	// Product description of the coffee.
-	Description string `json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Order ID
 	ID int64 `json:"id"`
 	// URI for an image of the coffee.

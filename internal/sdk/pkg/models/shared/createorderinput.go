@@ -5,7 +5,7 @@ package shared
 // CreateOrderInput - An input object to creating an order
 type CreateOrderInput struct {
 	// Product description of the coffee.
-	Description string `json:"description"`
+	Description *string `json:"description,omitempty"`
 	// URI for an image of the coffee.
 	Image string `json:"image"`
 	// Product name of the coffee.

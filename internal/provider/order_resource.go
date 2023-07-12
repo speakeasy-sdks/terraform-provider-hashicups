@@ -48,7 +48,8 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `Product description of the coffee.`,
 			},
 			"id": schema.Int64Attribute{

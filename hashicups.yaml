@@ -6,7 +6,7 @@ info:
 servers:
   - url: https://example.com
 security:
-  - APIKey: [ ]
+  - APIKey: []
 externalDocs:
   url: https://docs.speakeasyapi.dev
   description: The Speakeasy Platform Documentation
@@ -98,7 +98,6 @@ components:
       required:
         - name
         - teaser
-        - description
         - price
         - image
       type: object
@@ -128,7 +127,6 @@ components:
         - id
         - name
         - teaser
-        - description
         - price
         - image
       type: object

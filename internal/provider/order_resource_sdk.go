@@ -9,7 +9,12 @@ import (
 )
 
 func (r *OrderResourceModel) ToCreateSDKType() *shared.CreateOrderInput {
-	description := r.Description.ValueString()
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	image := r.Image.ValueString()
 	name := r.Name.ValueString()
 	price, _ := r.Price.ValueBigFloat().Float64()
@@ -40,7 +45,11 @@ func (r *OrderResourceModel) ToDeleteSDKType() *shared.CreateOrderInput {
 }
 
 func (r *OrderResourceModel) RefreshFromGetResponse(resp *shared.Order) {
-	r.Description = types.StringValue(resp.Description)
+	if resp.Description != nil {
+		r.Description = types.StringValue(*resp.Description)
+	} else {
+		r.Description = types.StringNull()
+	}
 	r.ID = types.Int64Value(resp.ID)
 	r.Image = types.StringValue(resp.Image)
 	r.Name = types.StringValue(resp.Name)
