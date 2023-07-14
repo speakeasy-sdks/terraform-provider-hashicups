@@ -6,6 +6,8 @@ package shared
 type CreateOrderInput struct {
 	// Product description of the coffee.
 	Description *string `json:"description,omitempty"`
+	// Order ID
+	ID *int64 `json:"id,omitempty"`
 	// URI for an image of the coffee.
 	Image string `json:"image"`
 	// Product name of the coffee.

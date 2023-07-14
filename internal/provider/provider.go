@@ -39,7 +39,7 @@ func (p *HashicupsProvider) Schema(ctx context.Context, req provider.SchemaReque
 		Description: `Hashicups: Example Hashicups through Speakeasy`,
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://example.com)",
+				MarkdownDescription: "Server URL (defaults to http://localhost:35123/anything)",
 				Optional:            true,
 				Required:            false,
 			},
@@ -63,7 +63,7 @@ func (p *HashicupsProvider) Configure(ctx context.Context, req provider.Configur
 	ServerURL := data.ServerURL.ValueString()
 
 	if ServerURL == "" {
-		ServerURL = "https://example.com"
+		ServerURL = "http://localhost:35123/anything"
 	}
 
 	apiKey := data.APIKey.ValueString()

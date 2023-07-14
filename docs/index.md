@@ -33,4 +33,4 @@ provider "hashicups" {
 ### Optional
 
 - `api_key` (String, Sensitive)
-- `server_url` (String) Server URL (defaults to https://example.com)
+- `server_url` (String) Server URL (defaults to http://localhost:35123/anything)

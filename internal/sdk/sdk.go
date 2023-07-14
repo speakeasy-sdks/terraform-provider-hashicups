@@ -12,7 +12,7 @@ import (
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
-	"https://example.com",
+	"http://localhost:35123/anything",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -118,7 +118,7 @@ func New(opts ...SDKOption) *SDK {
 			Language:          "terraform",
 			OpenAPIDocVersion: "0.0.1",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.62.1",
+			GenVersion:        "2.65.0",
 		},
 	}
 	for _, opt := range opts {

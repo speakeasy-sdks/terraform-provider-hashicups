@@ -34,9 +34,6 @@ resource "hashicups_order" "my_order" {
 ### Optional
 
 - `description` (String) Product description of the coffee.
-
-### Read-Only
-
 - `id` (Number) Order ID
 
 

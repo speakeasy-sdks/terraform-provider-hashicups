@@ -3,9 +3,7 @@
 package provider
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"hashicups/internal/sdk/pkg/models/shared"
-	"math/big"
 )
 
 func (r *OrderResourceModel) ToCreateSDKType() *shared.CreateOrderInput {
@@ -15,23 +13,25 @@ func (r *OrderResourceModel) ToCreateSDKType() *shared.CreateOrderInput {
 	} else {
 		description = nil
 	}
+	id := new(int64)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueInt64()
+	} else {
+		id = nil
+	}
 	image := r.Image.ValueString()
 	name := r.Name.ValueString()
 	price, _ := r.Price.ValueBigFloat().Float64()
 	teaser := r.Teaser.ValueString()
 	out := shared.CreateOrderInput{
 		Description: description,
+		ID:          id,
 		Image:       image,
 		Name:        name,
 		Price:       price,
 		Teaser:      teaser,
 	}
 	return &out
-}
-
-func (r *OrderResourceModel) ToGetSDKType() *shared.CreateOrderInput {
-	out := r.ToCreateSDKType()
-	return out
 }
 
 func (r *OrderResourceModel) ToUpdateSDKType() *shared.CreateOrderInput {
@@ -42,25 +42,4 @@ func (r *OrderResourceModel) ToUpdateSDKType() *shared.CreateOrderInput {
 func (r *OrderResourceModel) ToDeleteSDKType() *shared.CreateOrderInput {
 	out := r.ToCreateSDKType()
 	return out
-}
-
-func (r *OrderResourceModel) RefreshFromGetResponse(resp *shared.Order) {
-	if resp.Description != nil {
-		r.Description = types.StringValue(*resp.Description)
-	} else {
-		r.Description = types.StringNull()
-	}
-	r.ID = types.Int64Value(resp.ID)
-	r.Image = types.StringValue(resp.Image)
-	r.Name = types.StringValue(resp.Name)
-	r.Price = types.NumberValue(big.NewFloat(resp.Price))
-	r.Teaser = types.StringValue(resp.Teaser)
-}
-
-func (r *OrderResourceModel) RefreshFromCreateResponse(resp *shared.Order) {
-	r.RefreshFromGetResponse(resp)
-}
-
-func (r *OrderResourceModel) RefreshFromUpdateResponse(resp *shared.Order) {
-	r.RefreshFromGetResponse(resp)
 }

@@ -4,7 +4,8 @@ info:
   title: Hashicups
   version: 0.0.1
 servers:
-  - url: https://example.com
+  # docker run -p 35123:80 kennethreitz/httpbin
+  - url: http://localhost:35123/anything
 security:
   - APIKey: []
 externalDocs:
@@ -28,35 +29,10 @@ paths:
         required: true
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Order"
           description: OK
       tags:
         - Order
   /v1/order/{orderID}:
-    get:
-      summary: Get an order
-      x-speakeasy-entity-operation: Order#get
-      operationId: getOrder
-      parameters:
-        - description: The ID of the order get.
-          in: path
-          name: orderID
-          x-speakeasy-match: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Order"
-          description: OK
-      tags:
-        - Order
     delete:
       summary: Delete an order
       x-speakeasy-entity-operation: Order#delete
@@ -80,37 +56,12 @@ components:
       description: An input object to creating an order
       x-speakeasy-entity: Order
       properties:
-        name:
-          type: string
-          description: Product name of the coffee.
-        teaser:
-          type: string
-          description: Fun tagline for the coffee.
-        description:
-          type: string
-          description: Product description of the coffee.
-        price:
-          type: number
-          description: Suggested cost of the coffee.
-        image:
-          type: string
-          description: URI for an image of the coffee.
-      required:
-        - name
-        - teaser
-        - price
-        - image
-      type: object
-    Order:
-      description: An order helps you make coffee
-      x-speakeasy-entity: Order
-      properties:
-        name:
-          type: string
-          description: Product name of the coffee.
         id:
           type: integer
           description: Order ID
+        name:
+          type: string
+          description: Product name of the coffee.
         teaser:
           type: string
           description: Fun tagline for the coffee.
@@ -124,7 +75,6 @@ components:
           type: string
           description: URI for an image of the coffee.
       required:
-        - id
         - name
         - teaser
         - price
