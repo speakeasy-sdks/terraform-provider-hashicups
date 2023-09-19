@@ -59,3 +59,7 @@ examples/provider/provider.tf
 internal/provider/order_resource.go
 internal/provider/order_resource_sdk.go
 examples/resources/hashicups_order/resource.tf
+internal/provider/order_data_source.go
+internal/provider/order_data_source_sdk.go
+examples/data-sources/hashicups_order/data-source.tf
+.gitattributes

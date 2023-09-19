@@ -88,7 +88,9 @@ func (p *HashicupsProvider) Resources(ctx context.Context) []func() resource.Res
 }
 
 func (p *HashicupsProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{}
+	return []func() datasource.DataSource{
+		NewOrderDataSource,
+	}
 }
 
 func New(version string) func() provider.Provider {

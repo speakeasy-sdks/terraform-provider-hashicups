@@ -115,7 +115,7 @@ func (s *order) GetOrder(ctx context.Context, request operations.GetOrderRequest
 		case utils.MatchContentType(contentType, `application/json`):
 			var out *shared.Order
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
-				return nil, err
+				return res, err
 			}
 
 			res.Order = out
@@ -138,7 +138,10 @@ func (s *order) UpsertOrder(ctx context.Context, request shared.CreateOrderInput
 		return nil, fmt.Errorf("request body is required")
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "PUT", url, bodyReader)
+	debugBody := bytes.NewBuffer([]byte{})
+	debugReader := io.TeeReader(bodyReader, debugBody)
+
+	req, err := http.NewRequestWithContext(ctx, "PUT", url, debugReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -161,6 +164,7 @@ func (s *order) UpsertOrder(ctx context.Context, request shared.CreateOrderInput
 	if err != nil {
 		return nil, fmt.Errorf("error reading response body: %w", err)
 	}
+	httpRes.Request.Body = io.NopCloser(debugBody)
 	httpRes.Body.Close()
 	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
@@ -177,7 +181,7 @@ func (s *order) UpsertOrder(ctx context.Context, request shared.CreateOrderInput
 		case utils.MatchContentType(contentType, `application/json`):
 			var out *shared.Order
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
-				return nil, err
+				return res, err
 			}
 
 			res.Order = out

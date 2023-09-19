@@ -118,6 +118,9 @@ func (r *OrderResource) Create(ctx context.Context, req resource.CreateRequest, 
 	res, err := r.client.Order.UpsertOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -163,6 +166,9 @@ func (r *OrderResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	res, err := r.client.Order.GetOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -194,6 +200,9 @@ func (r *OrderResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	res, err := r.client.Order.UpsertOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -239,6 +248,9 @@ func (r *OrderResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	res, err := r.client.Order.DeleteOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
