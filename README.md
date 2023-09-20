@@ -16,7 +16,7 @@ terraform {
   required_providers {
     hashicups = {
       source  = "speakeasy/hashicups"
-      version = "0.1.0"
+      version = "0.1.1"
     }
   }
 }
