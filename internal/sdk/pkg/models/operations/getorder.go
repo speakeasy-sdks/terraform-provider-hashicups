@@ -13,9 +13,12 @@ type GetOrderRequest struct {
 }
 
 type GetOrderResponse struct {
+	// HTTP response content type for this operation
 	ContentType string
 	// OK
-	Order       *shared.Order
-	StatusCode  int
+	Order *shared.Order
+	// HTTP response status code for this operation
+	StatusCode int
+	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 }
