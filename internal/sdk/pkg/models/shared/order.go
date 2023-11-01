@@ -17,3 +17,45 @@ type Order struct {
 	// Fun tagline for the coffee.
 	Teaser string `json:"teaser"`
 }
+
+func (o *Order) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *Order) GetID() int64 {
+	if o == nil {
+		return 0
+	}
+	return o.ID
+}
+
+func (o *Order) GetImage() string {
+	if o == nil {
+		return ""
+	}
+	return o.Image
+}
+
+func (o *Order) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *Order) GetPrice() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.Price
+}
+
+func (o *Order) GetTeaser() string {
+	if o == nil {
+		return ""
+	}
+	return o.Teaser
+}

@@ -15,3 +15,38 @@ type CreateOrderInput struct {
 	// Fun tagline for the coffee.
 	Teaser string `json:"teaser"`
 }
+
+func (o *CreateOrderInput) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *CreateOrderInput) GetImage() string {
+	if o == nil {
+		return ""
+	}
+	return o.Image
+}
+
+func (o *CreateOrderInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *CreateOrderInput) GetPrice() float64 {
+	if o == nil {
+		return 0.0
+	}
+	return o.Price
+}
+
+func (o *CreateOrderInput) GetTeaser() string {
+	if o == nil {
+		return ""
+	}
+	return o.Teaser
+}
