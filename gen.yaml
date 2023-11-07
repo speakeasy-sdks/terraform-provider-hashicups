@@ -2,22 +2,28 @@ configVersion: 1.0.0
 management:
   docChecksum: 7b193330bf41e2c47ba62aa354c4a561
   docVersion: 0.0.1
-  speakeasyVersion: 1.109.2
-  generationVersion: 2.173.0
+  speakeasyVersion: 1.114.1
+  generationVersion: 2.181.1
 generation:
-  repoURL: https://github.com/speakeasy-sdks/terraform-provider-hashicups.git
+  comments: {}
   sdkClassName: SDK
-  sdkFlattening: true
-  singleTagPerOp: false
-  telemetryEnabled: false
+  repoURL: https://github.com/speakeasy-sdks/terraform-provider-hashicups.git
 features:
   terraform:
-    core: 2.93.3
+    core: 3.2.1
     globalSecurity: 2.81.1
     globalServerURLs: 2.82.0
 terraform:
-  version: 0.6.0
+  version: 0.7.0
   author: speakeasy
+  imports:
+    option: openapi
+    paths:
+      callbacks: callbacks
+      errors: sdkerrors
+      operations: operations
+      shared: shared
+      webhooks: webhooks
   packageName: hashicups
   published: true
   repoSubDirectory: .

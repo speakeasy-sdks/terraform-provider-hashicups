@@ -15,18 +15,18 @@ import (
 	"strings"
 )
 
-type order struct {
+type Order struct {
 	sdkConfiguration sdkConfiguration
 }
 
-func newOrder(sdkConfig sdkConfiguration) *order {
-	return &order{
+func newOrder(sdkConfig sdkConfiguration) *Order {
+	return &Order{
 		sdkConfiguration: sdkConfig,
 	}
 }
 
 // DeleteOrder - Delete an order
-func (s *order) DeleteOrder(ctx context.Context, request operations.DeleteOrderRequest) (*operations.DeleteOrderResponse, error) {
+func (s *Order) DeleteOrder(ctx context.Context, request operations.DeleteOrderRequest) (*operations.DeleteOrderResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/v1/order/{orderID}", request, nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func (s *order) DeleteOrder(ctx context.Context, request operations.DeleteOrderR
 }
 
 // GetOrder - Get an order
-func (s *order) GetOrder(ctx context.Context, request operations.GetOrderRequest) (*operations.GetOrderResponse, error) {
+func (s *Order) GetOrder(ctx context.Context, request operations.GetOrderRequest) (*operations.GetOrderResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/v1/order/{orderID}", request, nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func (s *order) GetOrder(ctx context.Context, request operations.GetOrderRequest
 }
 
 // UpsertOrder - Create an order
-func (s *order) UpsertOrder(ctx context.Context, request shared.CreateOrderInput) (*operations.UpsertOrderResponse, error) {
+func (s *Order) UpsertOrder(ctx context.Context, request shared.CreateOrderInput) (*operations.UpsertOrderResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/v1/order"
 
