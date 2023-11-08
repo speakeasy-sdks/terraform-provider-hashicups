@@ -5,8 +5,8 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"hashicups/internal/sdk/pkg/models/shared"
-	"hashicups/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/utils"
 	"net/http"
 	"time"
 )
@@ -142,9 +142,9 @@ func New(opts ...SDKOption) *SDK {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.0.1",
-			SDKVersion:        "0.7.0",
-			GenVersion:        "2.181.1",
-			UserAgent:         "speakeasy-sdk/go 0.7.0 2.181.1 0.0.1 hashicups",
+			SDKVersion:        "0.8.0",
+			GenVersion:        "2.183.0",
+			UserAgent:         "speakeasy-sdk/go 0.8.0 2.183.0 0.0.1 hashicups",
 		},
 	}
 	for _, opt := range opts {

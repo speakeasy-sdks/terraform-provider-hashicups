@@ -12,7 +12,7 @@ import (
 	"time"
 	"unsafe"
 
-	"hashicups/internal/sdk/pkg/types"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/types"
 
 	"github.com/ericlagergren/decimal"
 )

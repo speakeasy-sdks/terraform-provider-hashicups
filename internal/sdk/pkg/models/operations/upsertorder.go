@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"hashicups/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 

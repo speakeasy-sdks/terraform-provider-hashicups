@@ -1,4 +1,4 @@
-module hashicups
+module github.com/speakeasy/terraform-provider-hashicups
 
 go 1.18
 

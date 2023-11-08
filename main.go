@@ -8,7 +8,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"hashicups/internal/provider"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/provider"
 )
 
 // Run "go generate" to format example terraform files and generate the docs for the registry/website

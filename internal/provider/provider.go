@@ -4,8 +4,8 @@ package provider
 
 import (
 	"context"
-	"hashicups/internal/sdk"
-	"hashicups/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"

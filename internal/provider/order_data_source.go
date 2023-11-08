@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"hashicups/internal/sdk"
-	"hashicups/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/operations"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"

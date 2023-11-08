@@ -4,7 +4,7 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"hashicups/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/shared"
 	"math/big"
 )
 
