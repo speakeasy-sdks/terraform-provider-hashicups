@@ -16,7 +16,7 @@ terraform {
   required_providers {
     hashicups = {
       source  = "speakeasy/hashicups"
-      version = "0.8.1"
+      version = "0.9.0"
     }
   }
 }
@@ -28,11 +28,13 @@ provider "hashicups" {
 <!-- End SDK Installation -->
 
 <!-- Start SDK Example Usage -->
-## Testing the provider locally
+### Testing the provider locally
 
 Should you want to validate a change locally, the `--debug` flag allows you to execute the provider against a terraform instance locally.
 
 This also allows for debuggers (e.g. delve) to be attached to the provider.
+
+### Example
 
 ```sh
 go run main.go --debug
