@@ -8,7 +8,7 @@ import (
 	"math/big"
 )
 
-func (r *OrderDataSourceModel) RefreshFromGetResponse(resp *shared.Order) {
+func (r *OrderDataSourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 	if resp.Description != nil {
 		r.Description = types.StringValue(*resp.Description)
 	} else {

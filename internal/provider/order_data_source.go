@@ -5,13 +5,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk"
-	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -138,7 +137,7 @@ func (r *OrderDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.Order)
+	data.RefreshFromSharedOrder(res.Order)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

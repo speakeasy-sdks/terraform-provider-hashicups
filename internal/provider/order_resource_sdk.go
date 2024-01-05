@@ -8,7 +8,7 @@ import (
 	"math/big"
 )
 
-func (r *OrderResourceModel) ToCreateSDKType() *shared.CreateOrderInput {
+func (r *OrderResourceModel) ToSharedCreateOrderInput() *shared.CreateOrderInput {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -29,22 +29,7 @@ func (r *OrderResourceModel) ToCreateSDKType() *shared.CreateOrderInput {
 	return &out
 }
 
-func (r *OrderResourceModel) ToGetSDKType() *shared.CreateOrderInput {
-	out := r.ToCreateSDKType()
-	return out
-}
-
-func (r *OrderResourceModel) ToUpdateSDKType() *shared.CreateOrderInput {
-	out := r.ToCreateSDKType()
-	return out
-}
-
-func (r *OrderResourceModel) ToDeleteSDKType() *shared.CreateOrderInput {
-	out := r.ToCreateSDKType()
-	return out
-}
-
-func (r *OrderResourceModel) RefreshFromGetResponse(resp *shared.Order) {
+func (r *OrderResourceModel) RefreshFromSharedOrder(resp *shared.Order) {
 	if resp.Description != nil {
 		r.Description = types.StringValue(*resp.Description)
 	} else {
@@ -55,12 +40,4 @@ func (r *OrderResourceModel) RefreshFromGetResponse(resp *shared.Order) {
 	r.Name = types.StringValue(resp.Name)
 	r.Price = types.NumberValue(big.NewFloat(float64(resp.Price)))
 	r.Teaser = types.StringValue(resp.Teaser)
-}
-
-func (r *OrderResourceModel) RefreshFromCreateResponse(resp *shared.Order) {
-	r.RefreshFromGetResponse(resp)
-}
-
-func (r *OrderResourceModel) RefreshFromUpdateResponse(resp *shared.Order) {
-	r.RefreshFromGetResponse(resp)
 }

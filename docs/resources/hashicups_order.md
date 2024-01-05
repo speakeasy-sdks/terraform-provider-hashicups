@@ -38,6 +38,6 @@ resource "hashicups_order" "my_order" {
 
 ### Read-Only
 
-- `id` (Number) Order ID
+- `id` (Number) The ID of the order to delete.
 
 

@@ -5,13 +5,15 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk"
-
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_int64planmodifier "github.com/speakeasy/terraform-provider-hashicups/internal/planmodifiers/int64planmodifier"
+	speakeasy_stringplanmodifier "github.com/speakeasy/terraform-provider-hashicups/internal/planmodifiers/stringplanmodifier"
+	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk"
 	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/operations"
 	"strconv"
 )
@@ -49,13 +51,19 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.Standard),
+				},
 				Optional:    true,
 				Description: `Product description of the coffee.`,
 			},
 			"id": schema.Int64Attribute{
-				Computed:    true,
-				Description: `Order ID`,
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.Standard),
+				},
+				Description: `The ID of the order to delete.`,
 			},
 			"image": schema.StringAttribute{
 				Required:    true,
@@ -99,14 +107,14 @@ func (r *OrderResource) Configure(ctx context.Context, req resource.ConfigureReq
 
 func (r *OrderResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *OrderResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -115,7 +123,7 @@ func (r *OrderResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	request := *data.ToCreateSDKType()
+	request := *data.ToSharedCreateOrderInput()
 	res, err := r.client.Order.UpsertOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -136,7 +144,8 @@ func (r *OrderResource) Create(ctx context.Context, req resource.CreateRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.Order)
+	data.RefreshFromSharedOrder(res.Order)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -184,7 +193,7 @@ func (r *OrderResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.Order)
+	data.RefreshFromSharedOrder(res.Order)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -192,12 +201,19 @@ func (r *OrderResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 func (r *OrderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *OrderResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	request := *data.ToUpdateSDKType()
+	request := *data.ToSharedCreateOrderInput()
 	res, err := r.client.Order.UpsertOrder(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -218,7 +234,8 @@ func (r *OrderResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromUpdateResponse(res.Order)
+	data.RefreshFromSharedOrder(res.Order)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -266,10 +283,10 @@ func (r *OrderResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 }
 
 func (r *OrderResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	id, err := strconv.Atoi(req.ID)
+	id2, err := strconv.Atoi(req.ID)
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("ID must be an integer but was %s", req.ID))
 	}
 
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), int64(id))...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), int64(id2))...)
 }
