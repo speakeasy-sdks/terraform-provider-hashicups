@@ -8,11 +8,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_int64planmodifier "github.com/speakeasy/terraform-provider-hashicups/internal/planmodifiers/int64planmodifier"
-	speakeasy_stringplanmodifier "github.com/speakeasy/terraform-provider-hashicups/internal/planmodifiers/stringplanmodifier"
 	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk"
 	"github.com/speakeasy/terraform-provider-hashicups/internal/sdk/pkg/models/operations"
 	"strconv"
@@ -51,18 +48,12 @@ func (r *OrderResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.Standard),
-				},
+				Computed:    true,
 				Optional:    true,
 				Description: `Product description of the coffee.`,
 			},
 			"id": schema.Int64Attribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Int64{
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.Standard),
-				},
+				Computed:    true,
 				Description: `The ID of the order to delete.`,
 			},
 			"image": schema.StringAttribute{

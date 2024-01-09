@@ -4,15 +4,15 @@ management:
   docChecksum: 7b193330bf41e2c47ba62aa354c4a561
   docVersion: 0.0.1
   speakeasyVersion: internal
-  generationVersion: 2.228.1
-  releaseVersion: 0.12.0
-  configChecksum: 2699b9e2fc6b4cbca15db50a05e41381
+  generationVersion: 2.230.1
+  releaseVersion: 0.12.1
+  configChecksum: 1c9fef95d2da6c708b199e69f4138b96
   repoURL: https://github.com/speakeasy-sdks/terraform-provider-hashicups.git
   repoSubDirectory: .
   published: true
 features:
   terraform:
-    core: 3.8.0
+    core: 3.8.1
     globalSecurity: 2.81.2
     globalServerURLs: 2.82.1
 generatedFiles:
@@ -66,6 +66,15 @@ generatedFiles:
   - internal/validators/ExactlyOneChild.go
   - internal/validators/JSONParseValidator.go
   - internal/validators/RFC3339Validator.go
+  - internal/validators/boolvalidators/not_null.go
+  - internal/validators/float64validators/not_null.go
+  - internal/validators/int64validators/not_null.go
+  - internal/validators/listvalidators/not_null.go
+  - internal/validators/mapvalidators/not_null.go
+  - internal/validators/numbervalidators/not_null.go
+  - internal/validators/objectvalidators/not_null.go
+  - internal/validators/setvalidators/not_null.go
+  - internal/validators/stringvalidators/not_null.go
   - main.go
   - terraform-registry-manifest.json
   - tools/tools.go
