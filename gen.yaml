@@ -5,8 +5,9 @@ generation:
     optionalPropertyRendering: withExample
   fixes:
     nameResolutionDec2023: false
+    parameterOrderingFeb2024: false
 terraform:
-  version: 0.12.4
+  version: 0.13.0
   author: speakeasy
   imports:
     option: openapi
