@@ -30,10 +30,12 @@ func (r *OrderResourceModel) ToSharedCreateOrderInput() *shared.CreateOrderInput
 }
 
 func (r *OrderResourceModel) RefreshFromSharedOrder(resp *shared.Order) {
-	r.Description = types.StringPointerValue(resp.Description)
-	r.ID = types.Int64Value(resp.ID)
-	r.Image = types.StringValue(resp.Image)
-	r.Name = types.StringValue(resp.Name)
-	r.Price = types.NumberValue(big.NewFloat(float64(resp.Price)))
-	r.Teaser = types.StringValue(resp.Teaser)
+	if resp != nil {
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.Int64Value(resp.ID)
+		r.Image = types.StringValue(resp.Image)
+		r.Name = types.StringValue(resp.Name)
+		r.Price = types.NumberValue(big.NewFloat(float64(resp.Price)))
+		r.Teaser = types.StringValue(resp.Teaser)
+	}
 }
