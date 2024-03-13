@@ -10,7 +10,7 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
 terraform:
-  version: 0.14.0
+  version: 0.14.1
   author: speakeasy
   imports:
     option: openapi

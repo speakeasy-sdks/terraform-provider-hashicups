@@ -3,16 +3,16 @@ id: a72a4b0f-521b-4892-bd77-b6a1afb8b82b
 management:
   docChecksum: 7b193330bf41e2c47ba62aa354c4a561
   docVersion: 0.0.1
-  speakeasyVersion: 1.204.1
-  generationVersion: 2.279.1
-  releaseVersion: 0.14.0
-  configChecksum: b99dffbb53af772facca9608df837a1e
+  speakeasyVersion: 1.207.1
+  generationVersion: 2.280.6
+  releaseVersion: 0.14.1
+  configChecksum: dc259f1ec47d0e5a0ff35ade30aa7888
   repoURL: https://github.com/speakeasy-sdks/terraform-provider-hashicups.git
   repoSubDirectory: .
   published: true
 features:
   terraform:
-    core: 3.10.2
+    core: 3.10.3
     globalSecurity: 2.81.5
     globalServerURLs: 2.82.1
 generatedFiles:
